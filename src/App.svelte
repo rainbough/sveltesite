@@ -1,30 +1,47 @@
 <script>
-	export let name;
+import router, { curRoute } from './router.js';
+import RouterLink from './RouterLink.svelte';
+import HeaderSection from './HeaderSection.svelte';
+import { onMount } from 'svelte';
+onMount(() => {
+//   curRoute.set(window.location.pathname);
+//   if (!history.state) {
+//     window.history.replaceState({path: window.location.pathname}, '',   window.location.href)
+//   }
+})
+function handlerBackNavigation(event){
+//   curRoute.set(event.state.path)
+}
 </script>
-
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
+    :root {
+		
+	}
+    :global(body) {
+		background: #222;
+		color: #fff;
 	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 </style>
+<svelte:window on:popstate={handlerBackNavigation} />
+<header role="banner">
+	<HeaderSection>
+		<nav>
+			<RouterLink page={{path: '/home', name: 'Home'}} />
+			<RouterLink page={{path: '/about', name: 'About'}} />
+		</nav>
+	</HeaderSection>
+</header>
+<main>
+	<div id="pageContent">
+
+
+	<!-- Page component updates here -->
+	<svelte:component this={router[$curRoute]} />
+	</div>
+</main>
+<footer role="contentinfo">
+	<div class="footer-content">
+		<h2>Footer Content here</h2>
+	</div>
+</footer>
